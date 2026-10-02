@@ -50,9 +50,27 @@ Every directory has its own README explaining what lives there and why.
 | [`scripts/`](scripts/README.md) | Setup and bulk import tools |
 | [`tests/`](tests/README.md) | End-to-end test suite |
 | [`docs/`](docs/README.md) | API reference, deployment, security notes |
+| [`design/`](design/README.md) | Front-end wireframes as SVG, for Figma |
 
-Start with [`docs/API.md`](docs/API.md) if you are building the front end, and
+Start with [`docs/API.md`](docs/API.md) if you are building the front end,
+[`design/`](design/README.md) for what the screens should look like, and
 [`docs/DEPLOY.md`](docs/DEPLOY.md) when you are ready to put it on a server.
+
+## Planned front end
+
+Not built yet. The intended stack, and why:
+
+**Astro**, with React or Svelte islands for the search filters and the map.
+A directory lives or dies on search traffic, so club pages must be
+server-rendered and individually indexable — a client-rendered single-page app
+serves Google an empty shell. Astro ships no JavaScript by default and makes
+only the interactive parts hydrate.
+
+**Leaflet with OpenStreetMap tiles** for the map: about 40KB, free, and needs no
+API key or account. Add marker clustering past roughly 500 pins.
+
+It would run as one more container beside the API on the same box, so the front
+end and `/api` share an origin — no CORS, no third-party cookie problems.
 
 ## Why this stack
 

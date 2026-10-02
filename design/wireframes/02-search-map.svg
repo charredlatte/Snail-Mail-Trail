@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <title>Snail Mail Trail - Map mode</title>
+  <rect width="1440" height="900" fill="#f4f4f3"/>
+  <g id="header">
+  <rect x="0" y="0" width="1440" height="68" rx="0" fill="#ffffff"/>
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="#d8d8d8" stroke-width="1"/>
+  <circle cx="46" cy="34" r="11" fill="none" stroke="#1a1a1a" stroke-width="1.6"/>
+  <path d="M40 34 a6 6 0 0 1 12 0 a3.2 3.2 0 0 1 -6.4 0" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="68" y="39" font-family="Inter, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1a1a1a">Snail Mail Trail</text>
+  <text x="1140" y="39" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#1a1a1a">Browse</text>
+  <text x="1210" y="39" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#1a1a1a">Submit a club</text>
+  <rect x="1316" y="18" width="84" height="32" rx="5" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="1358.0" y="38.5" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#1a1a1a" text-anchor="middle">Sign in</text>
+  </g>
+  <g id="map-mode">
+  <rect x="0" y="68" width="1440" height="60" rx="0" fill="#ffffff"/>
+  <line x1="0" y1="128" x2="1440" y2="128" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="40" y="80" width="400" height="36" rx="5" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="56" y="103" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#1a1a1a">postcard swap</text>
+  <rect x="456" y="80" width="116" height="36" rx="5" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="514" y="103" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#1a1a1a" text-anchor="middle">Filters  (3)</text>
+  <text x="600" y="103" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#6b6b6b">128 clubs</text>
+  <rect x="1288" y="80" width="112" height="36" rx="5" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="1344" y="81" width="55" height="34" rx="4" fill="#1a1a1a"/>
+  <text x="1316" y="103" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#6b6b6b" text-anchor="middle">List</text>
+  <text x="1372" y="103" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">Map</text>
+  <rect x="440" y="128" width="1000" height="772" rx="4" fill="#eef0ee" stroke="#d8d8d8" stroke-width="1"/>
+  <line x1="440" y1="128" x2="440" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="510" y1="128" x2="510" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="580" y1="128" x2="580" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="650" y1="128" x2="650" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="720" y1="128" x2="720" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="790" y1="128" x2="790" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="860" y1="128" x2="860" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="930" y1="128" x2="930" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1000" y1="128" x2="1000" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1070" y1="128" x2="1070" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1140" y1="128" x2="1140" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1210" y1="128" x2="1210" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1280" y1="128" x2="1280" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1350" y1="128" x2="1350" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="1420" y1="128" x2="1420" y2="900" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="128" x2="1440" y2="128" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="198" x2="1440" y2="198" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="268" x2="1440" y2="268" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="338" x2="1440" y2="338" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="408" x2="1440" y2="408" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="478" x2="1440" y2="478" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="548" x2="1440" y2="548" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="618" x2="1440" y2="618" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="688" x2="1440" y2="688" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="758" x2="1440" y2="758" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="828" x2="1440" y2="828" stroke="#e2e5e2" stroke-width="1"/>
+  <line x1="440" y1="898" x2="1440" y2="898" stroke="#e2e5e2" stroke-width="1"/>
+  <path d="M540.0 668.4 Q 840.0 452.24 1360.0 591.2" fill="none" stroke="#d3d8d3" stroke-width="7"/>
+  <path d="M640.0 359.6 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="640.0" cy="350.1" r="2.6" fill="#ffffff"/>
+  <path d="M860.0 529.44 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="860.0" cy="519.94" r="2.6" fill="#ffffff"/>
+  <path d="M1050.0 328.72 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="1050.0" cy="319.22" r="2.6" fill="#ffffff"/>
+  <path d="M1190.0 614.36 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="1190.0" cy="604.86" r="2.6" fill="#ffffff"/>
+  <path d="M770.0 714.72 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="770.0" cy="705.22" r="2.6" fill="#ffffff"/>
+  <path d="M1300.0 421.36 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="1300.0" cy="411.86" r="2.6" fill="#ffffff"/>
+  <path d="M960.0 776.48 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="960.0" cy="766.98" r="2.6" fill="#ffffff"/>
+  <path d="M580.0 552.6 c -7 -9 -7 -15 0 -15 c 7 0 7 6 0 15 z" fill="#1a1a1a"/>
+  <circle cx="580.0" cy="543.1" r="2.6" fill="#ffffff"/>
+  <rect x="1328" y="140" width="100" height="26" rx="4" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="1378" y="157" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="500" fill="#6b6b6b" text-anchor="middle">OpenStreetMap</text>
+  <rect x="0" y="128" width="440" height="772" rx="0" fill="#ffffff"/>
+  <line x1="440" y1="128" x2="440" y2="900" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="16" y="148" width="408" height="134" rx="6" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.8"/>
+  <text x="36" y="180" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Dayton Letter League</text>
+  <text x="36" y="201" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6b6b6b">Dayton, Ohio</text>
+  <text x="404" y="180" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#6b6b6b" text-anchor="end">104 km</text>
+  <rect x="36" y="216" width="340" height="6" rx="3" fill="#ebebea"/>
+  <rect x="36" y="229" width="187.00000000000003" height="6" rx="3" fill="#ebebea"/>
+  <text x="36" y="264" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a">Free</text>
+  <text x="160" y="264" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="500" fill="#b4530a">~ $0.00/mo USD</text>
+  <rect x="16" y="298" width="408" height="134" rx="6" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="36" y="330" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Chicago Kids Pen Pals</text>
+  <text x="36" y="351" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6b6b6b">Chicago, Illinois</text>
+  <rect x="36" y="366" width="340" height="6" rx="3" fill="#ebebea"/>
+  <rect x="36" y="379" width="187.00000000000003" height="6" rx="3" fill="#ebebea"/>
+  <text x="36" y="414" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a">Free</text>
+  <text x="160" y="414" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="500" fill="#b4530a">~ $0.00/mo USD</text>
+  <rect x="16" y="448" width="408" height="134" rx="6" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="36" y="480" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Toronto Queer Quills</text>
+  <text x="36" y="501" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6b6b6b">Toronto, Ontario</text>
+  <rect x="36" y="516" width="340" height="6" rx="3" fill="#ebebea"/>
+  <rect x="36" y="529" width="187.00000000000003" height="6" rx="3" fill="#ebebea"/>
+  <text x="36" y="564" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a">CAD 6.00 / month</text>
+  <text x="160" y="564" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="500" fill="#b4530a">~ $4.38/mo USD</text>
+  <rect x="16" y="598" width="408" height="134" rx="6" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="36" y="630" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Columbus Postcard Swap</text>
+  <text x="36" y="651" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6b6b6b">Columbus, Ohio</text>
+  <text x="404" y="630" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#6b6b6b" text-anchor="end">0 km</text>
+  <rect x="36" y="666" width="340" height="6" rx="3" fill="#ebebea"/>
+  <rect x="36" y="679" width="187.00000000000003" height="6" rx="3" fill="#ebebea"/>
+  <text x="36" y="714" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a">$5.00 / month</text>
+  <text x="160" y="714" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="500" fill="#b4530a">~ $5.00/mo USD</text>
+  <rect x="16" y="748" width="408" height="134" rx="6" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <text x="36" y="780" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#1a1a1a">Portland Stationery Soc.</text>
+  <text x="36" y="801" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6b6b6b">Portland, Oregon</text>
+  <rect x="36" y="816" width="340" height="6" rx="3" fill="#ebebea"/>
+  <rect x="36" y="829" width="187.00000000000003" height="6" rx="3" fill="#ebebea"/>
+  <text x="36" y="864" font-family="Inter, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#1a1a1a">$90.00 / year</text>
+  <text x="160" y="864" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="500" fill="#b4530a">~ $7.50/mo USD</text>
+  <text x="16" y="892" font-family="Inter, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#a8a8a8">Hovering a card highlights its pin, and vice versa.</text>
+  </g>
+</svg>

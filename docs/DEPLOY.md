@@ -1,18 +1,42 @@
 # Deploying
 
-Target: a **Hostinger VPS (KVM 1, around $5/month)** running Ubuntu, with your
-domain pointed at it.
+Target: any Ubuntu VPS with Docker, and your domain pointed at it. Two hosts are
+documented below; **the setup from step 2 onwards is identical on both**, because
+it is just Docker, nginx and certbot. Pick on price, not on lock-in.
 
-## Why not the $3 shared plan
+## Picking a host
 
-Hostinger's shared hosting runs PHP and MySQL. It cannot run Node, and it has no
-PostgreSQL — and Postgres is exactly what makes the search work (see the root
-README). The VPS is the cheapest plan that runs this stack. Buy the domain from
-Hostinger either way; it is the same account.
+Prices checked October 2026 — verify before you buy, they move.
 
-If you would rather not manage a server at all, the alternative is a managed
-Postgres (Neon and Supabase both have free tiers) with the API on any Node host.
-The code does not care — it only needs `DATABASE_URL`.
+| | Hetzner CX22 | Hostinger KVM 1 |
+|---|---|---|
+| Monthly, no commitment | **~€4.59** | **$11.99** |
+| Cheapest rate | same | $6.49, but only on a **2-year prepay** |
+| vCPU / RAM / disk | 2 / 4GB / 40GB | 1 / 4GB / 50GB |
+| Locations | EU + US (Ashburn, Hillsboro) | global |
+| Why pick it | roughly double the CPU for a third of the month-to-month price | one vendor and one bill alongside your domain; 240+ Docker templates in hPanel |
+
+**Hetzner is the better value** by a wide margin, and has no prepay commitment.
+**Hostinger is the simpler life** if you would rather have the domain, DNS and
+server on one invoice. Either runs this stack comfortably — the database will
+sit well under 1GB.
+
+Buy the domain wherever you like; you only need to point an A record at the
+server's IP.
+
+## What will not work
+
+**Hostinger's $3 shared plan.** It runs PHP and MySQL, cannot run Node, and has
+no PostgreSQL — and Postgres is what makes the search work (see the root
+README). Shared hosting is not an option for this stack at any price.
+
+**Managed Postgres, on cost.** Fly charges about $33.90/month, DigitalOcean $60,
+Railway $92.50 — each several times the price of the whole VPS, for a database
+holding well under 50MB. Neon's free tier would fit the data, but it scales to
+zero, so the first search after an idle spell waits on a cold start. Bad trade
+for a search site. Self-host Postgres in the compose file.
+
+The code does not care either way: it only needs `DATABASE_URL`.
 
 ---
 
@@ -23,7 +47,7 @@ at your VPS's IP address. DNS takes a few minutes to an hour to propagate.
 
 ## 2. Prepare the server
 
-SSH in as root, then:
+Identical on Hetzner and Hostinger. SSH in as root, then:
 
 ```bash
 # Create a non-root user to run the app
