@@ -10,7 +10,8 @@ that talks to it over JSON.
 ## What it does
 
 - **Search** across clubs with full-text matching that tolerates typos
-- **Filter** by price range, country, state/region, category tags and price model
+- **Filter** by price range in real money, normalised across both billing
+  periods and currencies, plus country, state/region, tags and price model
 - **Find nearby** clubs within a radius of any point, sorted by real distance
 - **Accounts** so people can sign in and submit clubs they know about
 - **Moderation** so nothing reaches the public directory until you approve it
@@ -75,9 +76,10 @@ than adding a crypto library.
 
 Worth knowing before you launch, in rough order of when they will bite:
 
-- **Mixed currencies are compared as bare numbers.** A club priced at 6 CAD
-  sorts as if it were 6 USD. Fine while your listings are mostly one currency;
-  if that stops being true, store a converted `usd_cents` column at import time.
+- **Exchange rates are frozen per listing, not live.** Each club stores the
+  rate captured when it was entered, so a search result never changes price
+  because a currency moved. Rates drift over months; re-run the importer to
+  refresh them, or set them in the admin queue.
 - **No email sending.** No password reset, no email verification, no "your club
   was approved" notification. Adding these needs an SMTP provider.
 - **Radius search scans the matching rows.** Instant up to roughly 50,000 clubs.

@@ -24,8 +24,8 @@ const HAVERSINE_SQL = (latParam, lngParam) => `
 
 export const SORTS = {
   relevance:  'rank DESC NULLS LAST, c.name ASC',
-  price_asc:  'c.monthly_cents ASC, c.name ASC',
-  price_desc: 'c.monthly_cents DESC, c.name ASC',
+  price_asc:  'c.usd_monthly_cents ASC, c.name ASC',
+  price_desc: 'c.usd_monthly_cents DESC, c.name ASC',
   distance:   'distance_km ASC NULLS LAST, c.name ASC',
   newest:     'c.created_at DESC',
   name:       'c.name ASC',
@@ -86,11 +86,13 @@ export function buildClubSearch(opts) {
   }
 
   // --- price --------------------------------------------------------------
-  // Compared against monthly_cents (the generated normalised column) so a
-  // yearly club and a monthly club can sit under the same "$20/month" ceiling.
-  if (minPrice != null) where.push(`c.monthly_cents >= $${push(minPrice)}`);
-  if (maxPrice != null) where.push(`c.monthly_cents <= $${push(maxPrice)}`);
-  if (period)          where.push(`c.price_period  =  $${push(period)}`);
+  // Always usd_monthly_cents, never monthly_cents. The USD column is normalised
+  // for both billing period and currency, so "under $20/month" compares a
+  // yearly GBP club against a monthly USD one honestly. Filtering on the native
+  // column would treat GBP 14 as USD 14.
+  if (minPrice != null) where.push(`c.usd_monthly_cents >= $${push(minPrice)}`);
+  if (maxPrice != null) where.push(`c.usd_monthly_cents <= $${push(maxPrice)}`);
+  if (period)          where.push(`c.price_period      =  $${push(period)}`);
 
   // --- radius -------------------------------------------------------------
   let distanceSelect = 'NULL::float AS distance_km';
@@ -125,7 +127,8 @@ export function buildClubSearch(opts) {
   // rather than running a second COUNT query.
   const text = `
     SELECT c.id, c.slug, c.name, c.description, c.url,
-           c.price_cents, c.price_currency, c.price_period, c.monthly_cents,
+           c.price_cents, c.price_currency, c.price_period,
+           c.monthly_cents, c.usd_monthly_cents, c.fx_to_usd,
            c.country_code, c.region, c.city, c.lat, c.lng, c.ships_worldwide,
            c.created_at,
            ${rankSelect},
@@ -154,10 +157,19 @@ export function toClubJSON(row) {
     description: row.description,
     url: row.url,
     price: {
+      // cents is always the amount x100 in the club's own currency, including
+      // for zero-decimal currencies: JPY 2500 is stored as 250000.
       cents: row.price_cents,
       currency: row.price_currency,
       period: row.price_period,
+      // Monthly equivalent in the club's own currency. For display.
       monthly_cents: row.monthly_cents,
+      // Monthly equivalent in US cents. This is what the price filter compares,
+      // so it is the figure to show when sorting or filtering by price.
+      usd_monthly_cents: row.usd_monthly_cents,
+      // null means no exchange rate has been recorded, so usd_monthly_cents
+      // fell back to treating the amount as USD. Non-null for converted rows.
+      fx_to_usd: row.fx_to_usd == null ? null : Number(row.fx_to_usd),
     },
     location: {
       country_code: row.country_code,

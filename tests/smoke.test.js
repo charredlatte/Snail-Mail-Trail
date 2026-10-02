@@ -91,7 +91,51 @@ describe('search', () => {
     assert.ok(slugs.includes('sample-portland-stationery-society'),
       '$90/year must qualify under a $10/month filter');
     assert.ok(!slugs.includes('sample-melbourne-post-haste'),
-      '$18/month must not qualify under a $10/month filter');
+      'AUD 18/month must not qualify under a $10/month filter');
+  });
+
+  test('price filter converts currency, not just billing period', async () => {
+    // London is GBP 14/month. At ~1.27 USD per GBP that is ~$17.78/month, so a
+    // $15 ceiling must exclude it -- even though the bare number 1400 would
+    // slip under a 1500 cent limit if the filter ignored currency. This is the
+    // assertion that fails if anything starts filtering on monthly_cents.
+    const under = (await get('/api/clubs?max_price=1500&per_page=100')).json();
+    assert.ok(!under.data.some((c) => c.slug === 'sample-london-letterbox-club'),
+      'GBP 14/month is about $17.78 and must not pass a $15/month filter');
+
+    const over = (await get('/api/clubs?max_price=1800&per_page=100')).json();
+    assert.ok(over.data.some((c) => c.slug === 'sample-london-letterbox-club'),
+      'GBP 14/month must pass a $18/month filter');
+  });
+
+  test('a cheap foreign club is not hidden by its large raw number', async () => {
+    // Kyoto is JPY 30,000/year. The raw minor-unit figure is 3,000,000, but the
+    // real cost is about $15.90/month, so a $20 ceiling must include it.
+    const { data } = (await get('/api/clubs?max_price=2000&per_page=100')).json();
+    assert.ok(data.some((c) => c.slug === 'sample-kyoto-tegami-circle'),
+      'JPY 30000/year is about $16/month and must pass a $20/month filter');
+  });
+
+  test('price sort orders by USD, not by raw amount', async () => {
+    const { data } = (await get('/api/clubs?sort=price_asc&per_page=100')).json();
+    const usd = data.map((c) => c.price.usd_monthly_cents);
+    assert.deepEqual(usd, [...usd].sort((a, b) => a - b),
+      'sort=price_asc must be ascending in USD terms');
+  });
+
+  test('exposes both the native and converted price', async () => {
+    const { data } = (await get('/api/clubs/sample-london-letterbox-club')).json();
+    assert.equal(data.price.currency, 'GBP');
+    assert.equal(data.price.monthly_cents, 1400, 'native monthly figure, GBP');
+    assert.ok(data.price.usd_monthly_cents > 1700,
+      'converted monthly figure, US cents');
+    assert.equal(typeof data.price.fx_to_usd, 'number');
+  });
+
+  test('a free club converts to zero in any currency', async () => {
+    const { data } = (await get('/api/clubs?max_price=0&per_page=100')).json();
+    assert.ok(data.length >= 2, 'the free clubs must all be reachable at $0');
+    for (const c of data) assert.equal(c.price.usd_monthly_cents, 0);
   });
 
   test('country filter also surfaces worldwide shippers', async () => {
@@ -177,6 +221,10 @@ describe('search', () => {
     assert.ok(body.countries.length >= 6);
     assert.ok(body.tags.some((t) => t.slug === 'postcard' && t.count > 0));
     assert.equal(body.price.min_cents, 0);
+    // Kyoto is the dearest at about $15.90/mo. Were this reported from the
+    // native column it would read 250000 (the raw JPY minor units).
+    assert.ok(body.price.max_cents > 0 && body.price.max_cents < 10000,
+      `facet max should be a sane USD figure, got ${body.price.max_cents}`);
   });
 });
 
@@ -357,6 +405,31 @@ describe('moderation', () => {
     });
     assert.equal(res.statusCode, 200);
     assert.equal(res.json().data.status, 'rejected');
+  });
+
+  test('the queue flags a foreign-currency club with no exchange rate', async () => {
+    const cookie = cookieFrom(await adminLogin());
+    const reg = await post('/api/auth/register',
+      { email: 'eurosubmitter@example.com', password: 'a-long-enough-password' });
+
+    await post('/api/clubs', {
+      name: 'Euro Rate Missing Club', price_cents: 1400,
+      price_currency: 'EUR', price_period: 'monthly',
+    }, { cookie: cookieFrom(reg) });
+
+    const queue = (await get('/api/admin/clubs?status=pending', { cookie })).json();
+    const target = queue.data.find((c) => c.slug === 'euro-rate-missing-club');
+    assert.equal(target.needs_fx_rate, true,
+      'a EUR club with no rate must be flagged before it is approved');
+
+    // Setting the rate clears the flag and corrects the USD price.
+    const res = await app.inject({
+      method: 'PATCH', url: `/api/admin/clubs/${target.id}`,
+      payload: { fx_to_usd: 1.08 }, headers: { cookie },
+    });
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().data.price.usd_monthly_cents, 1512,
+      'EUR 14 at 1.08 is USD 15.12');
   });
 
   test('a non-numeric club id is rejected', async () => {

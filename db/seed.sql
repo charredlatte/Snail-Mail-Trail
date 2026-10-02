@@ -20,79 +20,82 @@ INSERT INTO tags (slug, name) VALUES
   ('kids',        'Kids & Family')
 ON CONFLICT (slug) DO NOTHING;
 
+-- fx_to_usd is USD per ONE unit of the club's currency (GBP 1 = USD 1.27).
+-- Approximate and frozen for sample data; the import script looks up live
+-- rates for real listings.
 INSERT INTO clubs
   (slug, name, description, url, price_cents, price_currency, price_period,
-   country_code, region, city, lat, lng, ships_worldwide, status)
+   fx_to_usd, country_code, region, city, lat, lng, ships_worldwide, status)
 VALUES
   ('sample-columbus-postcard-swap', 'Columbus Postcard Swap',
    'Monthly postcard exchange for central Ohio. Beginners welcome, no minimum.',
    'https://example.com/columbus-postcard-swap',
-   500, 'USD', 'monthly', 'US', 'Ohio', 'Columbus', 39.9612, -82.9988, false, 'approved'),
+   500, 'USD', 'monthly', 1.0, 'US', 'Ohio', 'Columbus', 39.9612, -82.9988, false, 'approved'),
 
   ('sample-brooklyn-zine-post', 'Brooklyn Zine Post',
    'Quarterly zine trade by mail. Each round pairs you with three other makers.',
    'https://example.com/brooklyn-zine-post',
-   3600, 'USD', 'quarterly', 'US', 'New York', 'Brooklyn', 40.6782, -73.9442, false, 'approved'),
+   3600, 'USD', 'quarterly', 1.0, 'US', 'New York', 'Brooklyn', 40.6782, -73.9442, false, 'approved'),
 
   ('sample-portland-stationery-society', 'Portland Stationery Society',
    'Letter writing socials plus a yearly stationery parcel.',
    'https://example.com/portland-stationery-society',
-   9000, 'USD', 'yearly', 'US', 'Oregon', 'Portland', 45.5152, -122.6784, false, 'approved'),
+   9000, 'USD', 'yearly', 1.0, 'US', 'Oregon', 'Portland', 45.5152, -122.6784, false, 'approved'),
 
   ('sample-austin-mail-art-collective', 'Austin Mail Art Collective',
    'Pay per swap. Send art, get art. No subscription, no commitment.',
    'https://example.com/austin-mail-art',
-   800, 'USD', 'per_swap', 'US', 'Texas', 'Austin', 30.2672, -97.7431, false, 'approved'),
+   800, 'USD', 'per_swap', 1.0, 'US', 'Texas', 'Austin', 30.2672, -97.7431, false, 'approved'),
 
   ('sample-dayton-letter-league', 'Dayton Letter League',
    'Free community pen pal matching for southwest Ohio.',
    'https://example.com/dayton-letter-league',
-   0, 'USD', 'free', 'US', 'Ohio', 'Dayton', 39.7589, -84.1916, false, 'approved'),
+   0, 'USD', 'free', 1.0, 'US', 'Ohio', 'Dayton', 39.7589, -84.1916, false, 'approved'),
 
   ('sample-san-francisco-snail-society', 'San Francisco Snail Society',
    'Bay Area letter writers. Monthly prompts and a stamp swap.',
    'https://example.com/sf-snail-society',
-   1200, 'USD', 'monthly', 'US', 'California', 'San Francisco', 37.7749, -122.4194, false, 'approved'),
+   1200, 'USD', 'monthly', 1.0, 'US', 'California', 'San Francisco', 37.7749, -122.4194, false, 'approved'),
 
   ('sample-chicago-kids-pen-pals', 'Chicago Kids Pen Pals',
    'Supervised pen pal program for ages 7-14, run through local libraries.',
    'https://example.com/chicago-kids-pen-pals',
-   0, 'USD', 'free', 'US', 'Illinois', 'Chicago', 41.8781, -87.6298, false, 'approved'),
+   0, 'USD', 'free', 1.0, 'US', 'Illinois', 'Chicago', 41.8781, -87.6298, false, 'approved'),
 
   ('sample-london-letterbox-club', 'London Letterbox Club',
    'Monthly stationery parcel posted anywhere in the world.',
    'https://example.com/london-letterbox',
-   1400, 'GBP', 'monthly', 'GB', 'England', 'London', 51.5074, -0.1278, true, 'approved'),
+   1400, 'GBP', 'monthly', 1.27, 'GB', 'England', 'London', 51.5074, -0.1278, true, 'approved'),
 
   ('sample-berlin-brieffreunde', 'Berlin Brieffreunde',
    'German and English pen pal matching, one-time joining fee.',
    'https://example.com/berlin-brieffreunde',
-   2000, 'EUR', 'one_time', 'DE', 'Berlin', 'Berlin', 52.5200, 13.4050, true, 'approved'),
+   2000, 'EUR', 'one_time', 1.08, 'DE', 'Berlin', 'Berlin', 52.5200, 13.4050, true, 'approved'),
 
   ('sample-kyoto-tegami-circle', 'Kyoto Tegami Circle',
    'Seasonal letter sets and washi tape, posted internationally.',
    'https://example.com/kyoto-tegami',
-   250000, 'JPY', 'yearly', 'JP', 'Kyoto', 'Kyoto', 35.0116, 135.7681, true, 'approved'),
+   3000000, 'JPY', 'yearly', 0.0067, 'JP', 'Kyoto', 'Kyoto', 35.0116, 135.7681, true, 'approved'),
 
   ('sample-toronto-queer-quills', 'Toronto Queer Quills',
    'LGBTQ+ letter writing circle. Sliding scale, pay what you can.',
    'https://example.com/toronto-queer-quills',
-   600, 'CAD', 'monthly', 'CA', 'Ontario', 'Toronto', 43.6532, -79.3832, false, 'approved'),
+   600, 'CAD', 'monthly', 0.73, 'CA', 'Ontario', 'Toronto', 43.6532, -79.3832, false, 'approved'),
 
   ('sample-melbourne-post-haste', 'Melbourne Post Haste',
    'Postcards and small parcels, worldwide members welcome.',
    'https://example.com/melbourne-post-haste',
-   1800, 'AUD', 'monthly', 'AU', 'Victoria', 'Melbourne', -37.8136, 144.9631, true, 'approved'),
+   1800, 'AUD', 'monthly', 0.65, 'AU', 'Victoria', 'Melbourne', -37.8136, 144.9631, true, 'approved'),
 
   ('sample-pending-example', 'Example Pending Submission',
    'Sits in the moderation queue so you can see the admin flow working.',
    'https://example.com/pending',
-   1000, 'USD', 'monthly', 'US', 'Ohio', 'Cleveland', 41.4993, -81.6944, false, 'pending'),
+   1000, 'USD', 'monthly', 1.0, 'US', 'Ohio', 'Cleveland', 41.4993, -81.6944, false, 'pending'),
 
   ('sample-pending-example-2', 'Second Pending Submission',
    'A second queued entry, so you can practise rejecting one as well as approving.',
    'https://example.com/pending-two',
-   1500, 'USD', 'monthly', 'US', 'Michigan', 'Detroit', 42.3314, -83.0458, false, 'pending')
+   1500, 'USD', 'monthly', 1.0, 'US', 'Michigan', 'Detroit', 42.3314, -83.0458, false, 'pending')
 ON CONFLICT (slug) DO NOTHING;
 
 -- Categorise the samples.

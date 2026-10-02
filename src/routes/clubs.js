@@ -118,8 +118,9 @@ export default async function clubRoutes(app) {
                LEFT JOIN club_tags ct ON ct.tag_id = t.id
                LEFT JOIN clubs c ON c.id = ct.club_id AND c.status = 'approved'
               GROUP BY t.slug, t.name ORDER BY count DESC, t.name`),
-      queryOne(`SELECT COALESCE(MIN(monthly_cents), 0)::int AS min_cents,
-                       COALESCE(MAX(monthly_cents), 0)::int AS max_cents
+      // USD, to match what the min_price/max_price filters actually compare.
+      queryOne(`SELECT COALESCE(MIN(usd_monthly_cents), 0)::int AS min_cents,
+                       COALESCE(MAX(usd_monthly_cents), 0)::int AS max_cents
                   FROM clubs WHERE status = 'approved'`),
     ]);
     return { countries, regions, tags, price, periods: PERIODS };

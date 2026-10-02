@@ -23,6 +23,8 @@ export default async function adminRoutes(app) {
     const { status, page, per_page } = request.query;
     const rows = await query(
       `SELECT c.*, u.email AS submitter_email,
+              (c.price_currency <> 'USD' AND c.fx_to_usd IS NULL
+               AND c.price_period <> 'free') AS needs_fx_rate,
               COALESCE((SELECT json_agg(json_build_object('slug', t.slug, 'name', t.name))
                           FROM club_tags ct JOIN tags t ON t.id = ct.tag_id
                          WHERE ct.club_id = c.id), '[]'::json) AS tags,
@@ -38,6 +40,9 @@ export default async function adminRoutes(app) {
     return {
       data: rows.map((r) => ({
         ...toClubJSON(r), status: r.status, submitter_email: r.submitter_email,
+        // true = priced in a foreign currency with no exchange rate recorded,
+        // so its USD price is wrong until you set fx_to_usd.
+        needs_fx_rate: r.needs_fx_rate,
       })),
       meta: { total, page, per_page, pages: Math.ceil(total / per_page) },
     };
@@ -60,6 +65,7 @@ export default async function adminRoutes(app) {
           price_cents:     { type: 'integer', minimum: 0 },
           price_currency:  { type: 'string', minLength: 3, maxLength: 3 },
           price_period:    { type: 'string', enum: PERIODS },
+          fx_to_usd:       { type: 'number', exclusiveMinimum: 0 },
           country_code:    { type: 'string', minLength: 2, maxLength: 2 },
           region:          { type: 'string', maxLength: 100 },
           city:            { type: 'string', maxLength: 100 },
@@ -82,8 +88,8 @@ export default async function adminRoutes(app) {
     // Column names come from this fixed list, never from the request body, so
     // the dynamic SET clause cannot be steered by a caller.
     const ALLOWED = ['status', 'reject_reason', 'name', 'description', 'url',
-      'price_cents', 'price_currency', 'price_period', 'country_code', 'region',
-      'city', 'lat', 'lng', 'ships_worldwide'];
+      'price_cents', 'price_currency', 'price_period', 'fx_to_usd',
+      'country_code', 'region', 'city', 'lat', 'lng', 'ships_worldwide'];
 
     const sets = [];
     const params = [];

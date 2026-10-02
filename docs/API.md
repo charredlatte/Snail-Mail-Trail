@@ -22,8 +22,8 @@ page of everything approved.
 | `country` | 2 letters | `US`, `GB`, `JP`. Also returns worldwide shippers. |
 | `region` | string | State / province. Case-insensitive. |
 | `tags` | string | Comma-separated slugs: `postcard,zine`. Matches **any**. |
-| `min_price` | integer | Minimum **cents per month**. `0` = free. |
-| `max_price` | integer | Maximum **cents per month**. `1000` = $10/month. |
+| `min_price` | integer | Minimum **US cents per month**. `0` = free. |
+| `max_price` | integer | Maximum **US cents per month**. `1000` = $10/month. |
 | `period` | string | `free`, `monthly`, `quarterly`, `yearly`, `one_time`, `per_swap` |
 | `lat`, `lng` | number | Centre point for a radius search. |
 | `radius_km` | number | Radius in kilometres. Needs `lat` and `lng` too. |
@@ -31,10 +31,29 @@ page of everything approved.
 | `page` | integer | 1-based. Default `1`. |
 | `per_page` | integer | Default `24`, max `100`. |
 
-**Prices are in cents per month.** A club charging $90/year is compared as
-$7.50/month, so a `max_price=1000` filter includes it. This is the whole point —
-it lets someone say "under $10 a month" and get an honest answer across clubs
-that bill differently.
+**Prices are in US cents per month, normalised twice.** First for billing
+period: a club charging $90/year is compared as $7.50/month. Then for currency:
+a club charging GBP 14/month is compared as about $17.78/month, not as 1400.
+
+That is the whole point of the filter — someone says "under $10 a month" and
+gets an honest answer across clubs that bill on different schedules in
+different currencies.
+
+Each result carries both figures, and they are not interchangeable:
+
+| Field | Use it for |
+|-------|-----------|
+| `price.cents` + `price.currency` + `price.period` | showing the real price: "GBP 14 / month" |
+| `price.monthly_cents` | monthly equivalent **in the club's own currency** |
+| `price.usd_monthly_cents` | monthly equivalent **in US cents** — matches the filter |
+
+So show `cents`/`currency`/`period` on a club card, and `usd_monthly_cents`
+whenever the user is comparing or sorting by price.
+
+`price.fx_to_usd` is the rate used (US dollars per one unit of the club's
+currency). It is `null` when no rate has been recorded, which means
+`usd_monthly_cents` fell back to treating the amount as dollars — accurate for
+USD clubs, approximate for anything else.
 
 **`lat`, `lng` and `radius_km` must all three be present** for a radius search.
 Supplying only some of them is treated as a half-filled form and the geo filter
@@ -63,7 +82,9 @@ GET /api/clubs?lat=39.9612&lng=-82.9988&radius_km=100&sort=distance
         "cents": 500,
         "currency": "USD",
         "period": "monthly",
-        "monthly_cents": 500
+        "monthly_cents": 500,
+        "usd_monthly_cents": 500,
+        "fx_to_usd": 1
       },
       "location": {
         "country_code": "US",
@@ -102,7 +123,9 @@ and checkboxes never drift out of sync with the data.
 }
 ```
 
-`price` gives you the real bounds for a price slider.
+`price` gives you the real bounds for a price slider, in **US cents per month** —
+the same unit `min_price` and `max_price` take, so you can wire the slider
+straight to the filter.
 
 ---
 
@@ -175,6 +198,11 @@ A `user` is `{ id, email, display_name, role }`. `role` is `member` or `admin`.
 Only `name` is required. Returns `201` with the created club and a message you
 can show the user.
 
+**Submissions do not set an exchange rate.** A club submitted in a currency
+other than USD is flagged in the admin queue, and an admin sets the rate when
+approving it. Your form only needs to collect `price_cents`, `price_currency`
+and `price_period`.
+
 **Every submission is created as `pending`** and is invisible in search until an
 admin approves it. Your form should say so. Tags that do not exist yet are
 created automatically.
@@ -196,7 +224,12 @@ Non-admins get `403`, signed-out callers get `401`.
 ### `GET /api/admin/clubs?status=pending`
 
 The review queue. `status` is `pending` (default), `approved` or `rejected`.
-Each entry includes `submitter_email`. Paginated like search.
+Paginated like search. Each entry adds two fields:
+
+- `submitter_email` — who submitted it
+- `needs_fx_rate` — `true` when the listing is priced in a foreign currency with
+  no exchange rate recorded. Approving it in that state prices it as though the
+  amount were dollars, so set `fx_to_usd` first.
 
 ### `PATCH /api/admin/clubs/:id`
 
@@ -248,3 +281,12 @@ allowed alongside credentials — that is a browser rule, not a configurable one
 
 **For map pins, request `per_page=100`** and filter out clubs where
 `location.lat` is `null`.
+
+**Do not print `price.cents / 100` with decimals for every currency.** Yen and
+won have no minor unit, so JPY 2500 is stored as `250000` and should render as
+"JPY 2,500", not "JPY 2500.00". `Intl.NumberFormat` handles this for you:
+
+```js
+new Intl.NumberFormat(undefined, { style: 'currency', currency: price.currency })
+  .format(price.cents / 100);
+```

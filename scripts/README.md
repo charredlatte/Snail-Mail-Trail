@@ -24,13 +24,14 @@ password, which is also how you recover from a lost admin login.
 npm run import -- clubs.csv                  # import as pending
 npm run import -- clubs.csv --approved       # publish immediately
 npm run import -- clubs.csv --geocode        # look up missing coordinates
+npm run import -- clubs.csv --no-fx          # skip the exchange rate lookup
 ```
 
 Export your spreadsheet as CSV with this header row. Only `name` is required:
 
 ```csv
-name,description,url,price,currency,period,country,region,city,lat,lng,ships_worldwide,tags
-Columbus Postcard Swap,Monthly swap,https://example.com,5.00,USD,monthly,US,Ohio,Columbus,,,false,postcard;beginner
+name,description,url,price,currency,period,country,region,city,lat,lng,ships_worldwide,tags,fx_to_usd
+Columbus Postcard Swap,Monthly swap,https://example.com,5.00,USD,monthly,US,Ohio,Columbus,,,false,postcard;beginner,
 ```
 
 | Column | Notes |
@@ -42,10 +43,30 @@ Columbus Postcard Swap,Monthly swap,https://example.com,5.00,USD,monthly,US,Ohio
 | `lat`/`lng` | Leave blank and pass `--geocode` to look them up |
 | `ships_worldwide` | `true` / `yes` / `1` |
 | `tags` | Semicolon-separated: `postcard;beginner` |
+| `fx_to_usd` | Leave blank. Only set it to pin a specific rate |
 
 **Re-importing updates rather than duplicates.** Rows are matched on the slug
 derived from the name, so fixing a typo in your spreadsheet and re-running
 updates the existing club.
+
+### About exchange rates
+
+Price filtering compares everything in US dollars, so any listing not priced in
+USD needs an exchange rate or it will be filtered as though its number were
+dollars — a GBP 14 club treated as a $14 one.
+
+The importer handles this for you. If any row is in a foreign currency it makes
+one request to [Frankfurter](https://frankfurter.dev) (European Central Bank
+rates, free, no API key) and applies the right rate to each row. Leave the
+`fx_to_usd` column blank unless you want to pin a specific rate.
+
+If the lookup fails, the import still succeeds and prints exactly which listings
+ended up without a rate, so nothing is silently mispriced. Those also show up in
+the admin queue with `needs_fx_rate: true`, and you can set the rate there.
+
+Rates are stored per listing rather than looked up on every search, so a club's
+price does not move because a currency did. Re-run the importer over the same
+spreadsheet to refresh them.
 
 ### About `--geocode`
 
